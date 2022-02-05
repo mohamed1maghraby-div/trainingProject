@@ -8,20 +8,19 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+use Mindscms\Entrust\Traits\EntrustUserWithPermissionsTrait;
+use Nicolaslopezj\Searchable\SearchableTrait;
+
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, EntrustUserWithPermissionsTrait, SearchableTrait;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -41,4 +40,27 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $searchable =[
+        'columns' => [
+            'users.username' => 10,
+            'users.email' => 10,
+        ],
+    ];
+    
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
+    public function friends(){
+        return $this->hasMany(Friend::class, 'user_id_sender');
+    }
+    
+    public function friends1(){
+        return $this->hasMany(Friend::class, 'user_id_receiver');
+    }
 }
