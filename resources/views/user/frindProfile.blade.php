@@ -6,15 +6,22 @@
     <div class="coverPage">
         {{-- <img src="" alt=""> --}}
         <div class="defaultCoverBackgourd"></div>
+        @if ($user->cover_image )
+            <img src="{{ asset('userDashboard/assets/users/covers/' . $user->cover_image) }}" alt="cover Image">
+        @endif
     </div>
     <div class="headerProfilePage">
         <div class="headerLeftSection">
             <div class="pesonalImage">
+                @if ($user->user_image)
+                <img src="{{ asset('userDashboard/assets/users/photos/' . $user->user_image) }}" alt="Profile Person">
+                @else
                 <img src="{{ asset('userDashboard/images/profilePerson.png') }}" alt="Profile Person">
+                @endif
                 <div class="camerIconBackground"><i class="camerIcon"></i></div>
             </div>
             <div class="mainInfo">
-                <h2>فور فيچن (ForeVision)</h2>
+                <h2>{{ $user->username }}</h2>
                 <p>101 Friends</p>
                 <div class="frendsImages">
                     <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
@@ -28,14 +35,54 @@
             </div>
         </div>
         <div class="headerRightSection">
-            <a class="headerRightSectionAdd" href="#">
-                <img src="{{ asset('userDashboard/images/addIcon.png') }}" alt="add icon">
-                <span>Add to story</span>
-            </a>
-                <a class="headerRightSectionEdit" href="#">
-                    <img src="{{ asset('userDashboard/images/eidtIcon.png') }}" alt="edit icon">
-                    <span>Edit profile</span>
-                </a>
+            @isset($showFriendRelat->approved)
+                @if ($showFriendRelat->approved == 1)
+                    <a class="headerRightSectionEdit" onclick="friendRemoveFunc(event)" href="#" style="color: #1d2129;">
+                        <img src="{{ asset('userDashboard/images/addedFriend.png') }}" alt="add friend icon" height="16" width="16">
+                        <span>Friends</span>
+                    </a>
+                    <a class="headerRightSectionAdd" href="#" style="margin-left: 10px; margin-right: 0;">
+                        <i data-visualcompletion="css-img" class="hu5pjgll lzf7d6o1" style="background-image: url('/userDashboard/images/icons.png'); filter: brightness(0) invert(1); background-position: 0px -258px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
+                        <span>Message</span>
+                    </a>
+                    <div class="friendRemove">
+                        <a href="#">
+                            <img src="{{ asset('userDashboard/images/favorites.png') }}" alt="Favorites">
+                            <span>Favorites</span>
+                        </a>
+                        <a href="#">
+                            <img src="{{ asset('userDashboard/images/editfriendlist.png') }}" alt="Edit Friend List">
+                            <span>Edit Friend List</span>
+                        </a>
+                        <a href="#">
+                            <img src="{{ asset('userDashboard/images/unfollow.png') }}" alt="Unfollow">
+                            <span>Unfollow</span>
+                        </a>
+                        <a href="{{ route('user.removefriend', $user->id) }}">
+                            <i style="background-image: url({{ asset('userDashboard/images/unfriendlist.png') }}); background-position: 0px -84px; background-size: auto; width: 20px; height: 20px; background-repeat: no-repeat; display: inline-block;"></i>
+                            <span>Unfriend</span>
+                        </a>
+                    </div>
+                @elseif ($showFriendRelat->approved == 0)
+                    <a class="headerRightSectionAdd" href="{{ route('user.addfriend', $user->id) }}">
+                        <img src="{{ asset('userDashboard/images/addFriendicon.png') }}" alt="add friend icon" height="16" width="16">
+                        <span>Pending Friend</span>
+                    </a>
+                    <a class="headerRightSectionEdit" href="#">
+                        <img src="{{ asset('userDashboard/images/eidtIcon.png') }}" alt="edit icon">
+                        <span>Edit profile</span>
+                    </a>
+            @endisset
+                @else
+                    <a class="headerRightSectionAdd" href="{{ route('user.addfriend', $user->id) }}">
+                        <img src="{{ asset('userDashboard/images/addFriendicon.png') }}" alt="add friend icon" height="16" width="16">
+                        <span>Add Friend</span>
+                    </a>
+                        <a class="headerRightSectionEdit" href="#">
+                            <img src="{{ asset('userDashboard/images/eidtIcon.png') }}" alt="edit icon">
+                            <span>Edit profile</span>
+                    </a>
+                @endif
         </div>
     </div>
     <hr>
@@ -49,7 +96,17 @@
             <a href="#">Check-ins</a>
             <a href="#">More</a>
         </div>
-        <div class="profileNavRight"><span>...</span></div>
+        <div class="profileNavRight">
+            <span>...</span>
+            <div class="thereDots">
+                <a href="#">Audio call</a>
+                <a href="#">Video call</a>
+                <a href="#">Search profile</a>
+                <a href="#">See Friendship</a>
+                <a href="#">Find support or report profile</a>
+                <a href="{{ route('user.blockfriend', $user->id) }}">Block</a>
+            </div>
+        </div>
     </div>
 </div>
 <div class="profilePageBotton">

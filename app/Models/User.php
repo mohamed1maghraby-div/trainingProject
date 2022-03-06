@@ -56,11 +56,51 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Comment::class);
     }
 
-    public function friends(){
-        return $this->hasMany(Friend::class, 'user_id_sender');
+    // friendship that this user started
+	public function friendsOfThisUser()
+	{
+		return $this->belongsToMany(User::class, 'friends', 'user_id_sender', 'user_id_receiver')
+                ->wherePivot('approved', 1)
+                ->wherePivot('blocked', 0);
+	}
+
+	// friendship that this user was asked for
+	public function thisUserFriendOf()
+	{
+		return $this->belongsToMany(User::class, 'friends', 'user_id_receiver', 'user_id_sender')
+                ->wherePivot('approved', 1)
+                ->wherePivot('blocked', 0);
+	}
+
+	// accessor allowing you call $user->friends
+	public function getFriendsAttribute()
+	{
+		if ( ! array_key_exists('friends', $this->relations)) $this->loadFriends();
+		return $this->getRelation('friends');
+	}
+
+	public function loadFriends()
+	{
+		if ( ! array_key_exists('friends', $this->relations))
+		{
+		$friends = $this->mergeFriends();
+		$this->setRelation('friends', $friends);
+	    }
+	}
+
+	public function mergeFriends()
+	{
+		if($temp = $this->friendsOfThisUser)
+		return $temp->merge($this->thisUserFriendOf);
+		else
+		return $this->thisUserFriendOf;
+	}
+
+    public function addFriend(User $user){
+        $this->friendsOfThisUser()->attach($user->id);
     }
-    
-    public function friends1(){
-        return $this->hasMany(Friend::class, 'user_id_receiver');
+
+    public function removeFriend(User $user){
+        $this->friendsOfThisUser()->detach($user->id);
     }
 }

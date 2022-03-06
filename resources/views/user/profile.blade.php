@@ -1,29 +1,82 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="uploadCancelSubmitShow">
+    <div class="uploadCancelSubmit">
+        <div class="uploadInfo">
+            <i></i>
+            <p>Your cover photo is public.</p>
+        </div>
+        <div class="uploadButtons">
+            <a href="#" onclick="uploadCancel(event)">Cancel</a>
+            <a href="{{ route('user.store.background') }}" onclick="event.preventDefault(); document.getElementById('submitUploadBgCover').submit();">Save changes</a>
+        </div>
+    </div>
+</div>
+
+<div class="photoUploadCancelSubmitShow">
+    <div class="uploadCancelSubmit">
+        <div class="uploadInfo">
+            <i></i>
+            <p>Your photo is public.</p>
+        </div>
+        <div class="uploadButtons">
+            <a href="#" onclick="photoUploadCancel(event)">Cancel</a>
+            <a href="{{ route('user.store.background') }}" onclick="event.preventDefault(); document.getElementById('photoSubmitUploadBgCover').submit();">Save changes</a>
+        </div>
+    </div>
+</div>
 
 <div class="profilePageTop">
     <div class="coverPage">
         {{-- <img src="" alt=""> --}}
         <div class="defaultCoverBackgourd"></div>
+        <div class="addCoverPhoto">
+            <i></i>{{ $medo = auth()->user()->cover_image ? 'Edit' : 'Add' }} Cover Photo
+            {!! Form::open(['route' => 'user.store.background', 'method' => 'post', 'id' => 'submitUploadBgCover', 'files' => true]) !!}
+                {!! Form::file('cover_image', ['id' => 'file-upload', 'accept' => 'image/*', 'onchange' => 'showPreview(event);']) !!}
+            {!! Form::close() !!}
+        </div>
+        @if (auth()->user()->cover_image )
+            <img src="{{ asset('userDashboard/assets/users/covers/' . auth()->user()->cover_image) }}" alt="cover Image">
+        @endif
+        <div class="preview">
+            <img id="bg-preview">
+        </div>
     </div>
     <div class="headerProfilePage">
         <div class="headerLeftSection">
             <div class="pesonalImage">
-                <img src="{{ asset('userDashboard/images/profilePerson.png') }}" alt="Profile Person">
-                <div class="camerIconBackground"><i class="camerIcon"></i></div>
+                <img id="photo-preview" style="position: absolute;">
+                @if (auth()->user()->user_image )
+                    <img src="{{ asset('userDashboard/assets/users/photos/' . auth()->user()->user_image) }}" alt="photo Image">
+                @else
+                    <img src="{{ asset('userDashboard/images/profilePerson.png') }}" alt="Profile Person">
+                @endif
+                <div class="camerIconBackground">
+                    <i class="camerIcon"></i>
+                    {!! Form::open(['route' => 'user.store.background', 'method' => 'post', 'id' => 'photoSubmitUploadBgCover', 'files' => true]) !!}
+                    {!! Form::file('user_image', ['id' => 'file-upload', 'accept' => 'image/*', 'onchange' => 'showPrsonalPhoto(event);']) !!}
+                    {!! Form::close() !!}
+                </div>
             </div>
             <div class="mainInfo">
-                <h2>فور فيچن (ForeVision)</h2>
-                <p>101 Friends</p>
+                <h2>{{ auth()->user()->username }}</h2>
+                <p>{{ $allFriends->count() }} Friend{{ $allFriends->count() > 1? 's' : '' }}</p>
                 <div class="frendsImages">
-                    <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
-                    <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
-                    <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
-                    <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
-                    <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
-                    <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
-                    <img src="{{ asset('userDashboard/images/smallFrendsImages.jpg') }}" alt="Frends Image">
+                    @forelse ($allFriends as $allFriend)
+                        @if ($allFriend->user_image != '')
+                            <a href="{{ route('user.search', $allFriend->username) }}">
+                                <img src="{{ asset('userDashboard/assets/users/photos/' . $allFriend->user_image) }}" width="32" height="32" alt="Frends Image">
+                            </a>
+                        @else
+                            <a href="{{ route('user.search', $allFriend->username) }}">
+                                <img src="{{ asset('userDashboard/images/defaultPerson.png') }}" height="32" width="32" alt="Person Image">
+                            </a>
+                        @endif
+                    @empty
+                    zero
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -74,38 +127,30 @@
                     <h5>Friends</h5>
                     <a href="#">See all friends</a>
                 </div>
-                <p>101 friends</p>
-                <div class="friendPreson">
-                    <img src="{{ asset('userDashboard/images/allFrends.jpg') }}" width="100" height="100" alt="all frends">
-                        <span>Dokkan Diet</span>
-                </div>
-                <div class="friendPreson">
-                    <img src="{{ asset('userDashboard/images/allFrends.jpg') }}" width="100" height="100" alt="all frends">
-                        <span>Dokkan Diet</span>
-                </div>
-                <div class="friendPreson">
-                    <img src="{{ asset('userDashboard/images/allFrends.jpg') }}" width="100" height="100" alt="all frends">
-                        <span>Dokkan Diet</span>
-                </div>
-                <div class="friendPreson">
-                    <img src="{{ asset('userDashboard/images/allFrends.jpg') }}" width="100" height="100" alt="all frends">
-                        <span>Dokkan Diet</span>
-                </div>
-                <div class="friendPreson">
-                    <img src="{{ asset('userDashboard/images/allFrends.jpg') }}" width="100" height="100" alt="all frends">
-                        <span>Dokkan Diet</span>
-                </div>
-                <div class="friendPreson">
-                    <img src="{{ asset('userDashboard/images/allFrends.jpg') }}" width="100" height="100" alt="all frends">
-                        <span>Dokkan Diet</span>
-                </div>
+                <p>{{ $allFriends->count() }} Friend{{ $allFriends->count() > 1? 's' : '' }}</p>
+                @forelse ($allFriends as $allFriend)
+                    <div class="friendPreson">
+                        @if ($allFriend->user_image != '')
+                            <a href="{{ route('user.search', $allFriend->username) }}">
+                                <img src="{{ asset('userDashboard/assets/users/photos/' . $allFriend->user_image) }}" width="100" height="100" alt="all frends">
+                            </a>
+                        @else
+                            <a href="{{ route('user.search', $allFriend->username) }}">
+                                <img src="{{ asset('userDashboard/images/defaultPerson.png') }}" height="100" width="100" alt="all frends">
+                            </a>
+                        @endif
+                            <span>{{ $allFriend->username }}</span>
+                    </div>
+                @empty
+                <p>You not have any friends</p>
+                @endforelse
             </div>
         </div>
         <div class="profileBodyRight">
             <div class="whatOnYourMind">
                 <div class="header">
                     <img src="{{ asset('userDashboard/images/defaultPerson.png') }}" height="40" width="40" alt="Person Image">
-                    <a href="#">What's on your mind?</a>
+                    <a href="#">{{ __("What's on your mind? :username", ['username' => auth()->user()->username]) }}</a>
                 </div>
                 <div class="footer">
                     <a href="#">

@@ -7,6 +7,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
 
 class RolesTableSeeder extends Seeder
 {
@@ -55,7 +57,19 @@ class RolesTableSeeder extends Seeder
         $user3->attachRole($userRole);
 
 
+        
+        
         for($i=0; $i<100; $i++){
+
+            $image = $faker->imageUrl(640, 480, 'animals', true);
+            $filename = Str::slug($faker->name) . '.' . 'png';
+            $path = public_path('userDashboard/assets/users/covers/'. $filename);
+            Image::make($image)->save($path, 100);
+
+            $image1 = $faker->imageUrl(100, 100, 'cars', true);
+            $path1 = public_path('userDashboard/assets/users/photos/'. $filename);
+            Image::make($image1)->save($path1, 100);
+
             $user = User::create([
                 'name' => $faker->name,
                 'username' => $faker->userName,
@@ -64,6 +78,8 @@ class RolesTableSeeder extends Seeder
                 'email_verified_at' => Carbon::now(),
                 'password' => bcrypt('123123123'),
                 'status' => 1,
+                'user_image' => $filename,
+                'cover_image' => $filename,
             ]);
         }
     }

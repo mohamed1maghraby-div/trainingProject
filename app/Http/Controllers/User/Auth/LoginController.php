@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -44,5 +44,18 @@ class LoginController extends Controller
         return view('user.auth.login');
     }
     
-
+    protected function authenticated(Request $request, $user)
+    {
+        if($user->status == 1){
+            return redirect()->route('home')->with([
+                'message' => 'Logged In Successfully.',
+                'alert-type' => 'success'
+            ]);
+        }
+        return redirect()->route('mainPage')->with([
+            'message' => 'Please contact Bloggi Admin',
+            'alert-type' => 'warning'
+        ]);
+    }
+    
 }

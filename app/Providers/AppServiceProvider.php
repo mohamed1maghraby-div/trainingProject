@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Friend;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        View::composer('*', function($view){
+            View::share('userNotifications', Friend::where('user_id_receiver', Auth::id())->whereApproved(0)->whereBlocked(0)->get());
+        });
     }
 }

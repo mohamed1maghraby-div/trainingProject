@@ -184,6 +184,93 @@ body{
 .profilePageTop{
     max-width: 940px;
     margin: 0 auto;
+    position: relative;
+}
+.uploadCancelSubmitShow, .photoUploadCancelSubmitShow{
+    display: none;
+}
+.uploadCancelSubmit{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #0000005e;
+    z-index: 10;
+    color: #fff;
+    align-items: center;
+}
+.uploadCancelSubmit .uploadInfo{
+    display: flex;
+    align-items: center;
+}
+.uploadCancelSubmit .uploadInfo i{
+    filter: brightness(0) invert(1);
+    background-image: url(https://www.facebook.com/rsrc.php/v3/yg/r/q1CofY6jYUP.png);
+    background-position: 0px -310px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+.uploadButtons a:first-child{
+    background-color: #ffffff1a;
+    padding: 10px 20px;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 0 10px;
+}
+.uploadButtons a:last-child{
+    background-color: #2374e1;
+    padding: 10px 30px;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    margin-right: 20px;
+}
+.profilePageTop .addCoverPhoto {
+    position: absolute;
+    bottom: 16px;
+    right: 35px;
+    background-color: #fff;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 6px;
+    box-shadow: #00000047 0px 2px 7px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+}
+.addCoverPhoto .custom-file-upload{
+    position: absolute;
+}
+.addCoverPhoto #file-upload{
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+.coverPage #bg-preview{
+    display: none;
+}
+.profilePageTop .addCoverPhoto i{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/y6/r/nYhYdKhCfo8.png);
+    background-position: 0px -1020px;
+    background-size: auto;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    margin-right: 5px;
 }
 .coverPage{
     height: 400px;
@@ -197,6 +284,7 @@ body{
     left: 0;
     width: 100%;
     height: 100%;
+    border-radius: 0px 0px 10px 10px;
 }
 .defaultCoverBackgourd{
     position: absolute;
@@ -249,6 +337,15 @@ body{
     border-radius: 50%;
     cursor: pointer;
 }
+.camerIconBackground input{
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+}
 .mainInfo{
     margin-left: 20px;
 }
@@ -268,6 +365,7 @@ body{
 .headerRightSection{
     display: flex;
     align-items: center;
+    position: relative;
 }
 .headerRightSectionAdd{
     background-color: #1b74e4;
@@ -282,6 +380,30 @@ body{
 .headerRightSectionAdd img{
     filter: brightness(0) invert(1);
 }
+.friendRemove{
+    position: absolute;
+    background-color: #fff;
+    box-shadow: #00000047 0px 2px 7px;
+    border-radius: 6px;
+    top: 50px;
+    width: 290px;
+    padding: 5px 5px;
+    display: none;
+}
+.friendRemove a{
+    padding: 7px 10px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1d2129;
+}
+.friendRemove a:hover{
+    background-color: #f0f2f5;
+    border-radius: 3px;
+}
+.friendRemove a span{
+    margin-left: 10px;
+}
 .headerRightSectionEdit{
     background: #f0f2f5;
     padding: 10px 10px;
@@ -289,6 +411,10 @@ body{
     text-decoration: none;
     display: flex;
     align-items: center;
+}
+.headerRightSectionEdit span,
+.headerRightSectionAdd span{
+    margin-left: 5px;
 }
 .profileNav{
     display: flex;
@@ -534,7 +660,7 @@ body{
     position: fixed;
     right: 11px;
     top: 69px;
-    z-index: 5;
+    z-index: 100;
     background-color: #fff;
     border-radius: 6px;
     box-shadow: #00000047 0px 2px 7px;
@@ -546,7 +672,7 @@ body{
     height: 450px;
 }
 .notificationActive{
-    display: block;
+    display: block !important;
 }
 .notificationsystem h5{
     font-size: 16px;
@@ -616,9 +742,9 @@ body{
 .notFruendReqWrap p{
     margin-left: 20px;
 }
-.notFruendReqWrap p a{
+.notFruendReqWrap p a, .accountControllerSetting a{
     text-decoration: none;
-    color: #000;
+    color: #343434;
     font-weight: bold;
 }
 .accepteRemove{
@@ -638,5 +764,110 @@ body{
     color: #000;
     border-radius: 6px;
     margin-left: 6px;
+}
+
+.giveFeedback i{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yi/r/QnBF2xVFFiX.png);
+    background-position: 0px -25px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.giveFeedbackIcon{
+    background-color: #e4e6eb;
+    height: 20px;
+    padding: 11px;
+    border-radius: 50%;
+}
+.right-arrow{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yN/r/Hj2nsTvjm1e.png);
+    background-position: -83px -13px;
+    background-size: auto;
+    width: 24px; 
+    height: 24px; 
+    background-repeat: no-repeat; 
+    display: inline-block;
+}
+.SettingsPrivacy{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yA/r/fNc8BvGuxtf.png);
+    background-position: -21px -228px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.helpSupport{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yT/r/XTMbDFS_cMm.png);
+    background-position: 0px -306px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.displayAccessibbility{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yy/r/Q_btHtqrReS.png);
+    background-position: 0px -407px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.logout{
+    background-image: url(https://static.xx.fbcdn.net/rsrc.php/v3/yi/r/QnBF2xVFFiX.png);
+    background-position: 0px -46px;
+    background-size: auto;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.accountControllerSetting{
+    position: fixed;
+    right: 11px;
+    top: 69px;
+    z-index: 100;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: #00000047 0px 2px 7px;
+    overflow: hidden;
+    padding: 10px;
+    width: 350px;
+    display: none;
+    overflow-y: scroll;
+    height: 450px;
+    
+}
+.accountControllerSetting .info{
+    margin-left: 15px;
+}
+.accountControllerSpaceBetween{
+    justify-content: space-between;
+}
+.accountControllerSetting a, .displayflex{
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+}
+.displayflex h5{
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.accountControllerSetting a img{
+    border-radius: 50%;
+}
+.accountIfnoFirst h5{
+    margin: 15px 0;
+}
+.accountIfnoFirst p{
+    margin: 15px 0;
+}
+.accountControllerSetting hr {
+    border: 1px solid #e7e7e7;
+    margin: 4px 28px;
 }
 /* End searchPage*/

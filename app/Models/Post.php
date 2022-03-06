@@ -12,7 +12,17 @@ class Post extends Model
 {
     use HasFactory, Sluggable, SearchableTrait;
 
-    protected $guarded = [];
+    const PUBLIC = 1;
+    const FRIENDS = 2;
+    const SPECIFIC_FRIENDS = 3;
+    const ONLY_ME = 4;
+
+    protected $fillable = [
+        'body',
+        'status',
+        'visibility',
+        'user_id'
+    ];
 
     public function sluggable(){
         return [
@@ -20,11 +30,6 @@ class Post extends Model
                 'source' => 'title'
             ]
         ];
-    }
-
-
-    public function category(){
-        return $this->belongsTo(Category::class);
     }
 
     public function user(){

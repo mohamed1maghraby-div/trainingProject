@@ -13,14 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\User\IndexController::class, 'index']);
-Route::get('/profile', [\App\Http\Controllers\User\IndexController::class, 'show_profile'])->name('user.show.profile');
-Route::get('/search', [\App\Http\Controllers\User\IndexController::class, 'friend_search'])->name('user.friend.search');
-Route::get('/user/{username}', [\App\Http\Controllers\User\IndexController::class, 'user_search'])->name('user.search');
-Route::post('/accept', [\App\Http\Controllers\User\IndexController::class, 'accepte_friend'])->name('user.accepte.friend');
-Route::post('/remove', [\App\Http\Controllers\User\IndexController::class, 'remove_friend'])->name('user.remove.friend');
+Route::get('/', [\App\Http\Controllers\User\IndexController::class, 'index'])->name('mainPage');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'verified'], function(){
+
+    Route::get('/profile', [\App\Http\Controllers\User\IndexController::class, 'show_profile'])->name('user.show.profile');
+    Route::get('/addfriend/{id}', [\App\Http\Controllers\User\IndexController::class, 'getAddFriend'])->name('user.addfriend');
+    Route::get('/removefriend/{id}', [\App\Http\Controllers\User\IndexController::class, 'getRemoveFriend'])->name('user.removefriend');
+    Route::get('/blockfriend/{id}', [\App\Http\Controllers\User\IndexController::class, 'getBlockFriend'])->name('user.blockfriend');
+
+
+
+    Route::get('/search', [\App\Http\Controllers\User\IndexController::class, 'friend_search'])->name('user.friend.search');
+    Route::get('/user/{username}', [\App\Http\Controllers\User\IndexController::class, 'user_search'])->name('user.search');
+    Route::get('/accept/{id}', [\App\Http\Controllers\User\IndexController::class, 'accepteFriendRequest'])->name('user.accepte.friend');
+    Route::post('/remove/{id}', [\App\Http\Controllers\User\IndexController::class, 'removeFriendRequest'])->name('user.remove.friend');
+    
+
+    Route::post('/storebackgroud', [\App\Http\Controllers\User\IndexController::class, 'store_backgroud'])->name('user.store.background');
+    
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+});
 
 
 Route::get('/login', [App\Http\Controllers\User\Auth\LoginController::class, 'showLoginForm'])->name('login');
